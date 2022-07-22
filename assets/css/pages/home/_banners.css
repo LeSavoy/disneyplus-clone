@@ -12,8 +12,18 @@
 
 .banner-slider__item {
   flex-shrink: 0;
-  margin: 0 1rem .7rem;
+  padding: 0 1rem 3rem;
+  padding-bottom: 5px;
+  position: relative;
   width: 90vw;
+}
+
+.banner-slider__counter {
+  font-size: 2rem;
+  left: 4rem;
+  position: absolute;
+  top: 4rem;
+  z-index: 10;
 }
 
 .banner-slider__link {
@@ -42,13 +52,25 @@
 }
 
 .banner-slider__title {
+  animation: slideLeft 1s;
   left: 0;
+  display: none;
   top: 0;
   position: absolute;
   width: 100%;
 }
 
-.banner-slider .arrow-slider--left {
+.banner-slider__title.active {
+  display: block;
+}
+
+.banners .arrow-slider {
+  margin-top: -.7rem;
+  position: absolute;
+  z-index: 2;
+}
+
+.banners .arrow-slider--left {
   left: 3.6rem;
   position: absolute;
   z-index: 2;
