@@ -8,7 +8,6 @@
 
 .arrow-slider--left::before {
   content: '\f053';
-
 }
 
 .arrow-slider--right::before {

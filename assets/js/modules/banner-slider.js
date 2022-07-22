@@ -50,7 +50,7 @@ function animateTransition(active) {
 }
 
 function activeControlButton(index) {
-  btnControls.forEach(function(item) {
+  btnControls.forEach(function (item) {
     item.classList.remove('active')
   })
   const btnControl = btnControls[index]
@@ -58,7 +58,7 @@ function activeControlButton(index) {
 }
 
 function activeImageTitle(index) {
-  imgTitles.forEach(function(item) {
+  imgTitles.forEach(function (item) {
     item.classList.remove('active')
   })
   const imgTitle = imgTitles[index]
@@ -98,13 +98,13 @@ function onMouseMove(event) {
 
 function onMouseUp(event) {
   const slide = event.currentTarget
-  if (state.movementPosition > 150) {
+  const movementQtd = event.type.includes('touch') ? 50 : 150
+  if (state.movementPosition > movementQtd) {
     backwardSlide()
-  } else if (state.movementPosition < -150) {
+  } else if (state.movementPosition < -movementQtd) {
     forwardSlide()
   } else {
-    const calc = getCenterPosition(state.currentSlideIndex)
-    translateSlide(calc)
+    setVisibleSlide(state.currentSlideIndex)
   }
   slide.removeEventListener('mousemove', onMouseMove)
 }
@@ -112,6 +112,28 @@ function onMouseUp(event) {
 function onMouseLeave(event) {
   const slide = event.currentTarget
   slide.removeEventListener('mousemove', onMouseMove)
+}
+
+function onTouchStart(event, index) {
+  const slide = event.currentTarget
+  slide.addEventListener('touchmove', onTouchMove)
+  event.clientX = event.touches[0].clientX
+  onMouseDown(event, index)
+}
+
+function onTouchMove(event) {
+  event.clientX = event.touches[0].clientX
+  onMouseMove(event)
+}
+
+function onTouchEnd(event) {
+  const slide = event.currentTarget
+  slide.removeEventListener('touchmove', onTouchMove)
+  onMouseUp(event)
+}
+
+function onResizeWindow() {
+  setVisibleSlide(state.currentSlideIndex)
 }
 
 function setListeners() {
@@ -129,6 +151,17 @@ function setListeners() {
     btnControls[index].addEventListener('click', function (event) {
       onControlButtonClick(event, index)
     })
+    slide.addEventListener('touchstart', function(event) {
+      onTouchStart(event, index)
+    })
+    slide.addEventListener('touchend', onTouchEnd)
+  })
+  let resizeTimeOut
+  window.addEventListener('resize', function (event) {
+    clearTimeout(resizeTimeOut)
+    resizeTimeOut = setTimeout(function () {
+      onResizeWindow()
+    }, 1000)
   })
 }
 
