@@ -17,3 +17,9 @@
   font-family: 'Font Awesome 6 Free'; 
   font-size: .8rem;
 }
+
+@media screen and (max-width: 480px) {
+  .controls-slider__item::before {
+    font-size: .7rem;
+  }
+}
